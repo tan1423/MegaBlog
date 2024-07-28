@@ -17,9 +17,9 @@ function Signup() {
     try {
       const userData = await authService.createAccount(data);
       if (userData) {
-        const userData = await authService.getCurrentUser();
-        if (userData) {
-          dispatch(login(userData));
+        const currentUser = await authService.getCurrentUser();
+        if (currentUser) {
+          dispatch(login(currentUser));
         }
         navigate("/");
       }
@@ -27,20 +27,19 @@ function Signup() {
       setError(error.message);
     }
   };
+
   return (
-    <div className="flex items-center justify-center">
-      <div
-        className={`mx-auto w-full max-w-full bg-gray-100 rounded-xl p-10 border border-black/10`}
-      >
-        <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[100px]">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="mx-auto w-full max-w-lg bg-white rounded-xl p-8 border border-gray-200 shadow-md">
+        <div className="mb-4 flex justify-center">
+          <span className="inline-block w-24">
             <Logo width="100%" />
           </span>
         </div>
         <h2 className="text-center text-2xl font-bold leading-tight">
           Sign up to create account
         </h2>
-        <p className="mt-2 text-center text-base text-black/60">
+        <p className="mt-2 text-center text-sm text-gray-600">
           Already have an account?&nbsp;
           <Link
             to="/login"
@@ -49,39 +48,37 @@ function Signup() {
             Sign In
           </Link>
         </p>
-        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-
+        {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
         <form onSubmit={handleSubmit(create)}>
-          <div className="space-y-5">
+          <div className="space-y-4">
             <Input
-              label="Full Name: "
+              label="Full Name:"
               placeholder="Enter your full name"
-              {...register("name", {
-                required: true,
-              })}
+              {...register("name", { required: true })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <Input
-              label="Email: "
+              label="Email:"
               placeholder="Enter your email"
               type="email"
               {...register("email", {
                 required: true,
                 validate: {
-                  matchPatern: (value) =>
+                  matchPattern: (value) =>
                     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                     "Email address must be a valid address",
                 },
               })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <Input
-              label="Password: "
+              label="Password:"
               type="password"
               placeholder="Enter your password"
-              {...register("password", {
-                required: true,
-              })}
+              {...register("password", { required: true })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             />
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full py-2 bg-primary text-white rounded-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark">
               Create Account
             </Button>
           </div>
